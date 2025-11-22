@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 3</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">Top 3 🏆</div>
+            <nav>
+                <button id="btn-nova-lista" class="btn-primary">+ Criar Top 3</button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="feed-section">
+            <div class="feed-header">
+                <h2>Descubra recomendações</h2>
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="todos">Todos</button>
+                    <button class="filter-btn" data-filter="Filmes">Filmes</button>
+                    <button class="filter-btn" data-filter="Séries">Séries</button>
+                    <button class="filter-btn" data-filter="Músicas">Músicas</button>
+                    <button class="filter-btn" data-filter="Livros">Livros</button>
+                    <button class="filter-btn" data-filter="Jogos">Jogos</button>
+                </div>
+            </div>
+
+            <div id="feed-container" class="feed-grid"></div>
+            
+            <div id="empty-state" class="hidden">
+                <p>Nenhuma lista encontrada nesta categoria. 😢 <br> Seja o primeiro a criar!</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-criar" class="modal hidden">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2>Novo Top 3</h2>
+            <form id="form-top3">
+                <div class="form-group">
+                    <label for="titulo">Título da Lista</label>
+                    <input type="text" id="titulo" placeholder="Ex: Melhores Séries de Comédia" required autocomplete="off">
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria">
+                        <option value="Filmes">Filmes</option>
+                        <option value="Séries">Séries</option>
+                        <option value="Músicas">Músicas</option>
+                        <option value="Livros">Livros</option>
+                        <option value="Jogos">Jogos</option>
+                    </select>
+                </div>
+
+                <div class="items-section">
+                    <h3>Seus Escolhidos</h3>
+                    <div class="item-input">
+                        <span class="rank" style="color:#FFD700">1</span>
+                        <input type="text" id="item1" placeholder="1º Lugar" required>
+                    </div>
+                    <div class="item-input">
+                        <span class="rank" style="color:#C0C0C0">2</span>
+                        <input type="text" id="item2" placeholder="2º Lugar" required>
+                    </div>
+                    <div class="item-input">
+                        <span class="rank" style="color:#CD7F32">3</span>
+                        <input type="text" id="item3" placeholder="3º Lugar" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Publicar Lista</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden">Lista criada com sucesso! 🚀</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // 1. DADOS INICIAIS
+            const DADOS_PADRAO = [
+                { id: 1, titulo: "Melhores Sci-Fi", categoria: "Filmes", autor: "Admin", itens: ["Interstellar", "Duna", "Matrix"], likes: 10 },
+                { id: 2, titulo: "Séries de Tech", categoria: "Séries", autor: "Dev", itens: ["Mr. Robot", "Silicon Valley", "Severance"], likes: 42 }
+            ];
+
+            // Tenta carregar do LocalStorage. Se der erro, usa o padrão.
+            let listas = [];
+            try {
+                const salvos = localStorage.getItem('top3_listas');
+                listas = salvos ? JSON.parse(salvos) : DADOS_PADRAO;
+            } catch (e) {
+                console.error("Erro ao carregar dados:", e);
+                listas = DADOS_PADRAO;
+            }
+
+            // 2. ELEMENTOS
+            const feedContainer = document.getElementById('feed-container');
+            const emptyState = document.getElementById('empty-state');
+            const modal = document.getElementById('modal-criar');
+            const btnNovaLista = document.getElementById('btn-nova-lista');
+            const btnFecharModal = document.getElementById('close-modal');
+            const formTop3 = document.getElementById('form-top3');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const toast = document.getElementById('toast');
+
+            // 3. FUNÇÕES
+            function salvarDados() {
+                localStorage.setItem('top3_listas', JSON.stringify(listas));
+            }
+
+            function escaparHTML(str) {
+                if(!str) return "";
+                return str.replace(/[&<>'"]/g, tag => ({
+                    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+                }[tag]));
+            }
+
+            function renderizarFeed(filtro = "todos") {
+                feedContainer.innerHTML = "";
+                
+                const listasFiltradas = filtro === "todos" ? listas : listas.filter(l => l.categoria === filtro);
+
+                if (listasFiltradas.length === 0) {
+                    emptyState.classList.remove('hidden');
+                } else {
+                    emptyState.classList.add('hidden');
+                }
+
+                listasFiltradas.forEach(lista => {
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div>
+                                <span class="card-title">${escaparHTML(lista.titulo)}</span>
+                                <span class="card-author">@${lista.autor}</span>
+                            </div>
+                            <div>
+                                <span class="card-category">${lista.categoria}</span>
+                                <button class="btn-delete" title="Excluir">&times;</button>
+                            </div>
+                        </div>
+                        <ul class="top-list">
+                            <li class="rank-1"><span class="rank-number">1</span> ${escaparHTML(lista.itens[0])}</li>
+                            <li class="rank-2"><span class="rank-number">2</span> ${escaparHTML(lista.itens[1])}</li>
+                            <li class="rank-3"><span class="rank-number">3</span> ${escaparHTML(lista.itens[2])}</li>
+                        </ul>
+                        <div class="card-actions">
+                            <span>❤️ ${lista.likes}</span>
+                        </div>
+                    `;
+
+                    // Eventos do Card
+                    card.querySelector('.btn-delete').addEventListener('click', () => deletarLista(lista.id));
+                    card.querySelector('.card-actions').addEventListener('click', () => curtirLista(lista.id));
+
+                    feedContainer.appendChild(card);
+                });
+            }
+
+            function deletarLista(id) {
+                if(confirm("Apagar esta lista?")) {
+                    listas = listas.filter(l => l.id !== id);
+                    salvarDados();
+                    renderizarFeed();
+                }
+            }
+
+            function curtirLista(id) {
+                const lista = listas.find(l => l.id === id);
+                if(lista) {
+                    lista.likes++;
+                    salvarDados();
+                    renderizarFeed();
+                }
+            }
+
+            // 4. MODAL E FORMULÁRIO
+            function abrirModal() { modal.classList.remove('hidden'); }
+            function fecharModal() { modal.classList.add('hidden'); }
+
+            btnNovaLista.addEventListener('click', abrirModal);
+            btnFecharModal.addEventListener('click', fecharModal);
+            window.addEventListener('click', (e) => { if(e.target == modal) fecharModal(); });
+
+            formTop3.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                const titulo = document.getElementById('titulo').value;
+                const categoria = document.getElementById('categoria').value;
+                const itens = [
+                    document.getElementById('item1').value,
+                    document.getElementById('item2').value,
+                    document.getElementById('item3').value
+                ];
+
+                const novaLista = {
+                    id: Date.now(),
+                    titulo, categoria, itens,
+                    autor: "User",
+                    likes: 0
+                };
+
+                listas.unshift(novaLista);
+                salvarDados();
+                renderizarFeed();
+                fecharModal();
+                formTop3.reset();
+                
+                toast.classList.remove('hidden');
+                setTimeout(() => toast.classList.add('hidden'), 3000);
+            });
+
+            // 5. FILTROS
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderizarFeed(btn.getAttribute('data-filter'));
+                });
+            });
+
+            // INÍCIO
+            renderizarFeed();
+        });
+    </script>
+</body>
+</html>

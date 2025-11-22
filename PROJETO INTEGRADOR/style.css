@@ -14,6 +14,9 @@ body {
     padding-bottom: 50px;
 }
 
+/* =========================================
+   2. LAYOUT
+   ========================================= */
 .container {
     max-width: 1100px;
     margin: 0 auto;
@@ -21,13 +24,16 @@ body {
 }
 
 /* =========================================
-   2. CABEÇALHO
+   3. HEADER (CABEÇALHO)
    ========================================= */
 header {
     background-color: #202024;
     padding: 20px 0;
     border-bottom: 1px solid #323238;
-    margin-bottom: 40px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    margin-bottom: 30px;
 }
 
 .header-content {
@@ -50,35 +56,22 @@ header {
     border-radius: 5px;
     cursor: pointer;
     font-weight: 600;
-    transition: background 0.2s;
+    transition: 0.2s;
 }
 
 .btn-primary:hover {
     background-color: #9466ff;
 }
 
-.user-profile {
-    margin-left: 20px;
-    display: inline-block;
-    font-size: 0.9rem;
-    color: #a8a8b3;
-    cursor: pointer;
-}
-
 /* =========================================
-   3. FEED, FILTROS E ESTADO VAZIO
+   4. FEED E FILTROS
    ========================================= */
 .feed-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
     margin-bottom: 25px;
-    gap: 15px;
 }
 
-h2 {
-    font-size: 1.2rem;
+.feed-header h2 {
+    margin-bottom: 15px;
     color: #a8a8b3;
 }
 
@@ -92,43 +85,41 @@ h2 {
     background: #202024;
     border: 1px solid #323238;
     color: #a8a8b3;
-    padding: 6px 12px;
+    padding: 8px 16px;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 0.85rem;
-    transition: all 0.2s;
+    transition: 0.2s;
 }
 
-.filter-btn:hover {
-    border-color: #8257e6;
-    color: white;
-}
-
+.filter-btn:hover,
 .filter-btn.active {
-    background: #8257e6;
     border-color: #8257e6;
+    background: #8257e6;
     color: white;
 }
 
-/* Utilitário para esconder elementos */
+/* =========================================
+   5. ESTADO VAZIO E UTILITÁRIOS
+   ========================================= */
 .hidden {
     display: none !important;
 }
 
 #empty-state {
     text-align: center;
-    padding: 40px;
+    padding: 60px 20px;
     color: #737380;
-    grid-column: 1 / -1;
-    width: 100%;
+    border: 1px dashed #323238;
+    border-radius: 8px;
+    margin-top: 20px;
 }
 
 /* =========================================
-   4. CARDS (LISTAS)
+   6. CARDS (LISTAS)
    ========================================= */
 .feed-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px;
 }
 
@@ -148,7 +139,6 @@ h2 {
 .card-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
     margin-bottom: 15px;
 }
 
@@ -156,17 +146,24 @@ h2 {
     font-size: 1.1rem;
     font-weight: 700;
     color: #fff;
-    margin-bottom: 5px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.card-author {
+    font-size: 0.8rem;
+    color: #737380;
 }
 
 .card-category {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     background: #29292e;
     padding: 4px 8px;
     border-radius: 4px;
-    color: #04d361; /* Verde */
+    color: #04d361;
     text-transform: uppercase;
     font-weight: bold;
+    height: fit-content;
 }
 
 .btn-delete {
@@ -175,55 +172,56 @@ h2 {
     color: #e23c44;
     cursor: pointer;
     font-size: 1.2rem;
-    opacity: 0;
-    transition: opacity 0.2s;
-    margin-left: 10px;
+    margin-left: 8px;
+    opacity: 0.7;
 }
 
-.card:hover .btn-delete {
+.btn-delete:hover {
     opacity: 1;
 }
 
-.card-author {
-    font-size: 0.8rem;
-    color: #737380;
-    display: block;
+.top-list {
+    list-style: none;
+    margin-top: 15px;
 }
-
-.top-list { list-style: none; }
 
 .top-list li {
     background: #121214;
     margin-bottom: 8px;
-    padding: 10px;
+    padding: 12px;
     border-radius: 4px;
     display: flex;
     align-items: center;
-    font-size: 0.95rem;
 }
 
 .rank-number {
     font-weight: bold;
-    color: #8257e6;
-    margin-right: 10px;
+    margin-right: 12px;
     font-size: 1.2rem;
 }
+
+/* Cores do Pódio */
+.rank-1 .rank-number { color: #FFD700; } /* Ouro */
+.rank-2 .rank-number { color: #C0C0C0; } /* Prata */
+.rank-3 .rank-number { color: #CD7F32; } /* Bronze */
 
 .card-actions {
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid #323238;
     display: flex;
-    gap: 15px;
+    gap: 10px;
     color: #a8a8b3;
     font-size: 0.9rem;
     cursor: pointer;
 }
 
-.card-actions:hover span { color: #e23c44; }
+.card-actions:hover {
+    color: #e23c44;
+}
 
 /* =========================================
-   5. MODAL E FORMULÁRIO
+   7. MODAL E FORMULÁRIO
    ========================================= */
 .modal {
     position: fixed;
@@ -231,7 +229,7 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -243,9 +241,14 @@ h2 {
     padding: 30px;
     border-radius: 8px;
     width: 100%;
-    max-width: 500px;
+    max-width: 480px;
     position: relative;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    animation: modalFade 0.3s ease;
+}
+
+@keyframes modalFade {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 .close {
@@ -257,13 +260,14 @@ h2 {
     color: #a8a8b3;
 }
 
-.form-group, .item-input { margin-bottom: 15px; }
+.form-group {
+    margin-bottom: 15px;
+}
 
 .form-group label {
     display: block;
     margin-bottom: 8px;
     color: #a8a8b3;
-    font-size: 0.9rem;
 }
 
 input, select {
@@ -274,26 +278,32 @@ input, select {
     color: white;
     border-radius: 5px;
     outline: none;
-    font-size: 1rem;
+    margin-bottom: 5px;
 }
 
-input:focus, select:focus { border-color: #8257e6; }
+input:focus, select:focus {
+    border-color: #8257e6;
+}
 
 .items-section h3 {
-    margin: 20px 0 15px 0;
+    margin: 15px 0 10px;
     font-size: 1rem;
     color: #e1e1e6;
     border-bottom: 1px solid #323238;
-    padding-bottom: 10px;
+    padding-bottom: 5px;
 }
 
-.item-input { display: flex; align-items: center; gap: 10px; }
+.item-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
 
 .rank {
     font-weight: bold;
-    color: #8257e6;
-    font-size: 1.1rem;
-    width: 30px;
+    width: 20px;
+    text-align: center;
 }
 
 .btn-submit {
@@ -303,16 +313,17 @@ input:focus, select:focus { border-color: #8257e6; }
     border: none;
     color: white;
     font-weight: bold;
-    font-size: 1rem;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
-.btn-submit:hover { background: #00b34a; }
+.btn-submit:hover {
+    background: #00b34a;
+}
 
 /* =========================================
-   6. NOTIFICAÇÃO (TOAST)
+   8. NOTIFICAÇÃO (TOAST)
    ========================================= */
 .toast {
     position: fixed;
@@ -320,15 +331,13 @@ input:focus, select:focus { border-color: #8257e6; }
     right: 30px;
     background-color: #04d361;
     color: white;
-    padding: 15px 25px;
-    border-radius: 5px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    font-weight: bold;
+    padding: 12px 20px;
+    border-radius: 4px;
     animation: slideIn 0.5s ease;
     z-index: 2000;
 }
 
 @keyframes slideIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
 }

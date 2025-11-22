@@ -1,8 +1,7 @@
-// Espera o site carregar 100% antes de rodar o código
 document.addEventListener('DOMContentLoaded', () => {
 
     // ==========================================
-    // 1. DADOS INICIAIS (LOCAL STORAGE)
+    // 1. DADOS INICIAIS
     // ==========================================
     const DADOS_PADRAO = [
         {
@@ -15,19 +14,19 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 1715623999999,
-            titulo: "Álbuns para programar",
-            categoria: "Músicas",
-            autor: "DevJunior",
-            itens: ["Daft Punk - TRON", "Pink Floyd - Dark Side", "Lo-fi Hip Hop Radio"],
-            likes: 42
+            titulo: "Séries para Maratonar",
+            categoria: "Séries",
+            autor: "TopBinge",
+            itens: ["Breaking Bad", "Succession", "The Bear"],
+            likes: 99
         }
     ];
 
-    // Carrega o que está salvo ou usa o padrão
+    // Carrega do LocalStorage ou usa o padrão
     let listas = JSON.parse(localStorage.getItem('top3_listas')) || DADOS_PADRAO;
 
     // ==========================================
-    // 2. REFERÊNCIAS DO HTML
+    // 2. SELETORES
     // ==========================================
     const feedContainer = document.getElementById('feed-container');
     const emptyState = document.getElementById('empty-state');
@@ -39,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toast = document.getElementById('toast');
 
     // ==========================================
-    // 3. FUNÇÕES PRINCIPAIS
+    // 3. FUNÇÕES
     // ==========================================
 
     function salvarDados() {
@@ -53,104 +52,126 @@ document.addEventListener('DOMContentLoaded', () => {
             ? listas 
             : listas.filter(lista => lista.categoria === filtro);
 
+        // Controla o estado vazio
         if (listasFiltradas.length === 0) {
             emptyState.classList.remove('hidden');
         } else {
             emptyState.classList.add('hidden');
         }
 
+        // Cria os cards
         listasFiltradas.forEach(lista => {
             const card = document.createElement('div');
             card.className = 'card';
+            
+            // Renderiza HTML do card
             card.innerHTML = `
                 <div class="card-header">
                     <div>
-                        <div class="card-title">${lista.titulo}</div>
+                        <div class="card-title">${escaparHTML(lista.titulo)}</div>
                         <span class="card-author">por @${lista.autor}</span>
                     </div>
-                    <div style="display:flex; align-items:center;">
+                    <div>
                         <span class="card-category">${lista.categoria}</span>
-                        <button class="btn-delete" data-id="${lista.id}" title="Excluir">&times;</button>
+                        <button class="btn-delete" aria-label="Excluir lista">&times;</button>
                     </div>
                 </div>
                 <ul class="top-list">
-                    <li><span class="rank-number">1</span> ${lista.itens[0]}</li>
-                    <li><span class="rank-number">2</span> ${lista.itens[1]}</li>
-                    <li><span class="rank-number">3</span> ${lista.itens[2]}</li>
+                    <li class="rank-1"><span class="rank-number">1</span> ${escaparHTML(lista.itens[0])}</li>
+                    <li class="rank-2"><span class="rank-number">2</span> ${escaparHTML(lista.itens[1])}</li>
+                    <li class="rank-3"><span class="rank-number">3</span> ${escaparHTML(lista.itens[2])}</li>
                 </ul>
-                <div class="card-actions" data-id="${lista.id}">
+                <div class="card-actions">
                     <span>❤️ ${lista.likes} Curtidas</span>
                 </div>
             `;
+
+            // EVENTOS DO CARD
+            
+            // Botão Excluir
+            const btnDelete = card.querySelector('.btn-delete');
+            btnDelete.addEventListener('click', () => deletarLista(lista.id));
+
+            // Botão Curtir
+            const btnLike = card.querySelector('.card-actions');
+            btnLike.addEventListener('click', () => curtirLista(lista.id));
+
             feedContainer.appendChild(card);
-        });
-
-        // Re-adicionar eventos aos botões dinâmicos (Excluir e Curtir)
-        document.querySelectorAll('.btn-delete').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const id = Number(e.target.getAttribute('data-id'));
-                deletarLista(id);
-            });
-        });
-
-        document.querySelectorAll('.card-actions').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                // Pega o ID do elemento pai caso clique no texto
-                const id = Number(e.currentTarget.getAttribute('data-id'));
-                curtirLista(id);
-            });
         });
     }
 
+    // Função auxiliar para segurança (evita injeção de código HTML)
+    function escaparHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag])
+        );
+    }
+
     // ==========================================
-    // 4. LÓGICA DE CRIAÇÃO (O CORAÇÃO DO PROBLEMA)
+    // 4. LÓGICA DE CRIAÇÃO
     // ==========================================
     
     if (formTop3) {
         formTop3.addEventListener('submit', (e) => {
-            e.preventDefault(); // IMPEDE O RECARREGAMENTO DA PÁGINA
-            console.log("Botão Publicar clicado!");
+            e.preventDefault();
 
-            // Captura os valores
-            const titulo = document.getElementById('titulo').value;
+            const titulo = document.getElementById('titulo').value.trim();
             const categoria = document.getElementById('categoria').value;
-            const item1 = document.getElementById('item1').value;
-            const item2 = document.getElementById('item2').value;
-            const item3 = document.getElementById('item3').value;
+            const item1 = document.getElementById('item1').value.trim();
+            const item2 = document.getElementById('item2').value.trim();
+            const item3 = document.getElementById('item3').value.trim();
 
-            // Cria o objeto
+            if (!titulo || !item1 || !item2 || !item3) {
+                alert("Por favor, preencha todos os campos!");
+                return;
+            }
+
             const novaLista = {
                 id: Date.now(),
                 titulo: titulo,
                 categoria: categoria,
-                autor: "UsuarioAtual",
+                autor: "Voce", // Pode ser dinâmico no futuro
                 itens: [item1, item2, item3],
                 likes: 0
             };
 
-            // Salva e Atualiza
-            listas.unshift(novaLista);
+            listas.unshift(novaLista); // Adiciona no topo
             salvarDados();
-            renderizarFeed();
+            renderizarFeed(); // Atualiza a tela
             
-            // Fecha e Limpa
-            modal.style.display = "none";
+            fecharModal();
             formTop3.reset();
-            
-            // Feedback
-            toast.classList.remove('hidden');
-            setTimeout(() => toast.classList.add('hidden'), 3000);
+            mostrarToast();
         });
-    } else {
-        console.error("ERRO CRÍTICO: Formulário 'form-top3' não encontrado no HTML.");
     }
 
     // ==========================================
-    // 5. OUTRAS FUNÇÕES
+    // 5. GERENCIAMENTO DO MODAL E FILTROS
     // ==========================================
 
+    function abrirModal() {
+        modal.classList.remove('hidden');
+    }
+
+    function fecharModal() {
+        modal.classList.add('hidden');
+    }
+
+    function mostrarToast() {
+        toast.classList.remove('hidden');
+        setTimeout(() => {
+            toast.classList.add('hidden');
+        }, 3000);
+    }
+
     function deletarLista(id) {
-        if(confirm("Deseja apagar esta lista?")) {
+        if(confirm("Tem certeza que deseja apagar este Top 3?")) {
             listas = listas.filter(l => l.id !== id);
             salvarDados();
             renderizarFeed();
@@ -166,36 +187,23 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Abrir Modal
-    if(btnNovaLista) {
-        btnNovaLista.addEventListener('click', () => {
-            modal.style.display = "flex";
-        });
-    }
+    // Event Listeners
+    if(btnNovaLista) btnNovaLista.addEventListener('click', abrirModal);
+    if(btnFecharModal) btnFecharModal.addEventListener('click', fecharModal);
 
-    // Fechar Modal
-    if(btnFecharModal) {
-        btnFecharModal.addEventListener('click', () => {
-            modal.style.display = "none";
-        });
-    }
-
-    // Clicar fora do modal fecha ele
     window.addEventListener('click', (e) => {
-        if (e.target == modal) {
-            modal.style.display = "none";
-        }
+        if (e.target === modal) fecharModal();
     });
 
-    // Filtros
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            renderizarFeed(btn.getAttribute('data-filter'));
+            const filtro = btn.getAttribute('data-filter');
+            renderizarFeed(filtro);
         });
     });
 
-    // Inicia tudo
+    // Inicialização
     renderizarFeed();
 });
