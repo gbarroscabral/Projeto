@@ -1,0 +1,334 @@
+/* =========================================
+   1. RESET E ESTILOS GERAIS
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+body {
+    background-color: #121214;
+    color: #e1e1e6;
+    padding-bottom: 50px;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* =========================================
+   2. CABEÇALHO
+   ========================================= */
+header {
+    background-color: #202024;
+    padding: 20px 0;
+    border-bottom: 1px solid #323238;
+    margin-bottom: 40px;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #8257e6;
+}
+
+.btn-primary {
+    background-color: #8257e6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #9466ff;
+}
+
+.user-profile {
+    margin-left: 20px;
+    display: inline-block;
+    font-size: 0.9rem;
+    color: #a8a8b3;
+    cursor: pointer;
+}
+
+/* =========================================
+   3. FEED, FILTROS E ESTADO VAZIO
+   ========================================= */
+.feed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+    gap: 15px;
+}
+
+h2 {
+    font-size: 1.2rem;
+    color: #a8a8b3;
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: #202024;
+    border: 1px solid #323238;
+    color: #a8a8b3;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    border-color: #8257e6;
+    color: white;
+}
+
+.filter-btn.active {
+    background: #8257e6;
+    border-color: #8257e6;
+    color: white;
+}
+
+/* Utilitário para esconder elementos */
+.hidden {
+    display: none !important;
+}
+
+#empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #737380;
+    grid-column: 1 / -1;
+    width: 100%;
+}
+
+/* =========================================
+   4. CARDS (LISTAS)
+   ========================================= */
+.feed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: #202024;
+    border-radius: 8px;
+    padding: 20px;
+    border: 1px solid #323238;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    border-color: #8257e6;
+    transform: translateY(-5px);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 5px;
+}
+
+.card-category {
+    font-size: 0.75rem;
+    background: #29292e;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #04d361; /* Verde */
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.btn-delete {
+    background: transparent;
+    border: none;
+    color: #e23c44;
+    cursor: pointer;
+    font-size: 1.2rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    margin-left: 10px;
+}
+
+.card:hover .btn-delete {
+    opacity: 1;
+}
+
+.card-author {
+    font-size: 0.8rem;
+    color: #737380;
+    display: block;
+}
+
+.top-list { list-style: none; }
+
+.top-list li {
+    background: #121214;
+    margin-bottom: 8px;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    font-size: 0.95rem;
+}
+
+.rank-number {
+    font-weight: bold;
+    color: #8257e6;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.card-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #323238;
+    display: flex;
+    gap: 15px;
+    color: #a8a8b3;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.card-actions:hover span { color: #e23c44; }
+
+/* =========================================
+   5. MODAL E FORMULÁRIO
+   ========================================= */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #202024;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #a8a8b3;
+}
+
+.form-group, .item-input { margin-bottom: 15px; }
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #a8a8b3;
+    font-size: 0.9rem;
+}
+
+input, select {
+    width: 100%;
+    padding: 12px;
+    background: #121214;
+    border: 1px solid #323238;
+    color: white;
+    border-radius: 5px;
+    outline: none;
+    font-size: 1rem;
+}
+
+input:focus, select:focus { border-color: #8257e6; }
+
+.items-section h3 {
+    margin: 20px 0 15px 0;
+    font-size: 1rem;
+    color: #e1e1e6;
+    border-bottom: 1px solid #323238;
+    padding-bottom: 10px;
+}
+
+.item-input { display: flex; align-items: center; gap: 10px; }
+
+.rank {
+    font-weight: bold;
+    color: #8257e6;
+    font-size: 1.1rem;
+    width: 30px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: #04d361;
+    border: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-submit:hover { background: #00b34a; }
+
+/* =========================================
+   6. NOTIFICAÇÃO (TOAST)
+   ========================================= */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #04d361;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    font-weight: bold;
+    animation: slideIn 0.5s ease;
+    z-index: 2000;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}

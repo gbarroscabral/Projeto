@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 3 - Compartilhe o seu melhor</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <div class="container header-content">
+            <div class="logo">Top 3</div>
+            <nav>
+                <button id="btn-nova-lista" class="btn-primary">+ Criar Top 3</button>
+                <div class="user-profile">
+                    <span>Meu Perfil</span>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="feed-section">
+            <div class="feed-header">
+                <h2>Descubra recomendações</h2>
+                
+                <div class="filters">
+                    <button class="filter-btn active" data-filter="todos">Todos</button>
+                    <button class="filter-btn" data-filter="Filmes">Filmes</button>
+                    <button class="filter-btn" data-filter="Músicas">Músicas</button>
+                    <button class="filter-btn" data-filter="Livros">Livros</button>
+                    <button class="filter-btn" data-filter="Jogos">Jogos</button>
+                </div>
+            </div>
+
+            <div id="feed-container" class="feed-grid">
+                </div>
+            
+            <div id="empty-state" class="hidden">
+                <p>Nenhuma lista encontrada nesta categoria. 😢</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-criar" class="modal hidden">
+        <div class="modal-content">
+            <span id="close-modal" class="close">&times;</span>
+            <h2>Novo Top 3</h2>
+            <form id="form-top3">
+                <div class="form-group">
+                    <label for="titulo">Título da Lista</label>
+                    <input type="text" id="titulo" placeholder="Ex: Melhores Filmes de Terror" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="categoria">Categoria</label>
+                    <select id="categoria">
+                        <option value="Filmes">Filmes</option>
+                        <option value="Músicas">Músicas</option>
+                        <option value="Livros">Livros</option>
+                        <option value="Jogos">Jogos</option>
+                    </select>
+                </div>
+
+                <div class="items-section">
+                    <h3>Seus Escolhidos</h3>
+                    <div class="item-input">
+                        <span class="rank">#1</span>
+                        <input type="text" id="item1" placeholder="Nome do item" required>
+                    </div>
+                    <div class="item-input">
+                        <span class="rank">#2</span>
+                        <input type="text" id="item2" placeholder="Nome do item" required>
+                    </div>
+                    <div class="item-input">
+                        <span class="rank">#3</span>
+                        <input type="text" id="item3" placeholder="Nome do item" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">Publicar</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast hidden">Lista criada com sucesso! 🚀</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
