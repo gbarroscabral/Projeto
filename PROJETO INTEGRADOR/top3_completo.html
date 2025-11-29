@@ -70,11 +70,11 @@
                         <input type="text" id="item1" placeholder="1º Lugar" required>
                     </div>
                     <div class="item-input">
-                        <span class="rank" style="color:#C0C0C0">2</span>
+                        <span class="rank" style="color:#bbb3b3">2</span>
                         <input type="text" id="item2" placeholder="2º Lugar" required>
                     </div>
                     <div class="item-input">
-                        <span class="rank" style="color:#CD7F32">3</span>
+                        <span class="rank" style="color:#bb6f23">3</span>
                         <input type="text" id="item3" placeholder="3º Lugar" required>
                     </div>
                 </div>
@@ -89,7 +89,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            // 1. DADOS INICIAIS
+            //  DADOS INICIAIS
             const DADOS_PADRAO = [
                 { id: 1, titulo: "Melhores Sci-Fi", categoria: "Filmes", autor: "Admin", itens: ["Interstellar", "Duna", "Matrix"], likes: 10 },
                 { id: 2, titulo: "Séries de Tech", categoria: "Séries", autor: "Dev", itens: ["Mr. Robot", "Silicon Valley", "Severance"], likes: 42 }
@@ -105,7 +105,7 @@
                 listas = DADOS_PADRAO;
             }
 
-            // 2. ELEMENTOS
+            // ELEMENTOS
             const feedContainer = document.getElementById('feed-container');
             const emptyState = document.getElementById('empty-state');
             const modal = document.getElementById('modal-criar');
@@ -115,7 +115,7 @@
             const filterBtns = document.querySelectorAll('.filter-btn');
             const toast = document.getElementById('toast');
 
-            // 3. FUNÇÕES
+            // FUNÇÕES
             function salvarDados() {
                 localStorage.setItem('top3_listas', JSON.stringify(listas));
             }
@@ -187,7 +187,7 @@
                 }
             }
 
-            // 4. MODAL E FORMULÁRIO
+            //  MODAL E FORMULÁRIO
             function abrirModal() { modal.classList.remove('hidden'); }
             function fecharModal() { modal.classList.add('hidden'); }
 
@@ -223,7 +223,7 @@
                 setTimeout(() => toast.classList.add('hidden'), 3000);
             });
 
-            // 5. FILTROS
+            //  FILTROS
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     filterBtns.forEach(b => b.classList.remove('active'));

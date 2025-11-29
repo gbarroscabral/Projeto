@@ -1,8 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
+    //DADOS INICIAIS
 
-    // ==========================================
-    // 1. DADOS INICIAIS
-    // ==========================================
     const DADOS_PADRAO = [
         {
             id: 1715623456789,
@@ -25,9 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Carrega do LocalStorage ou usa o padrão
     let listas = JSON.parse(localStorage.getItem('top3_listas')) || DADOS_PADRAO;
 
-    // ==========================================
-    // 2. SELETORES
-    // ==========================================
+ 
+    //SELETORES
+ 
     const feedContainer = document.getElementById('feed-container');
     const emptyState = document.getElementById('empty-state');
     const modal = document.getElementById('modal-criar');
@@ -37,9 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const filterBtns = document.querySelectorAll('.filter-btn');
     const toast = document.getElementById('toast');
 
-    // ==========================================
     // 3. FUNÇÕES
-    // ==========================================
 
     function salvarDados() {
         localStorage.setItem('top3_listas', JSON.stringify(listas));
@@ -113,9 +109,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    // ==========================================
     // 4. LÓGICA DE CRIAÇÃO
-    // ==========================================
     
     if (formTop3) {
         formTop3.addEventListener('submit', (e) => {
@@ -151,9 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ==========================================
     // 5. GERENCIAMENTO DO MODAL E FILTROS
-    // ==========================================
 
     function abrirModal() {
         modal.classList.remove('hidden');

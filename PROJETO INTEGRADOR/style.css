@@ -1,6 +1,4 @@
-/* =========================================
-   1. RESET E ESTILOS GERAIS
-   ========================================= */
+
 * {
     margin: 0;
     padding: 0;
@@ -14,18 +12,13 @@ body {
     padding-bottom: 50px;
 }
 
-/* =========================================
-   2. LAYOUT
-   ========================================= */
 .container {
     max-width: 1100px;
     margin: 0 auto;
     padding: 0 20px;
 }
 
-/* =========================================
-   3. HEADER (CABEÇALHO)
-   ========================================= */
+
 header {
     background-color: #202024;
     padding: 20px 0;
@@ -60,12 +53,9 @@ header {
 }
 
 .btn-primary:hover {
-    background-color: #9466ff;
+    background-color: #8257e6;
 }
 
-/* =========================================
-   4. FEED E FILTROS
-   ========================================= */
 .feed-header {
     margin-bottom: 25px;
 }
@@ -98,9 +88,6 @@ header {
     color: white;
 }
 
-/* =========================================
-   5. ESTADO VAZIO E UTILITÁRIOS
-   ========================================= */
 .hidden {
     display: none !important;
 }
@@ -114,9 +101,7 @@ header {
     margin-top: 20px;
 }
 
-/* =========================================
-   6. CARDS (LISTAS)
-   ========================================= */
+
 .feed-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -200,10 +185,10 @@ header {
     font-size: 1.2rem;
 }
 
-/* Cores do Pódio */
-.rank-1 .rank-number { color: #FFD700; } /* Ouro */
-.rank-2 .rank-number { color: #C0C0C0; } /* Prata */
-.rank-3 .rank-number { color: #CD7F32; } /* Bronze */
+
+.rank-1 .rank-number { color: #FFD700; } 
+.rank-2 .rank-number { color: #C0C0C0; } 
+.rank-3 .rank-number { color: #CD7F32; } 
 
 .card-actions {
     margin-top: 15px;
@@ -220,9 +205,7 @@ header {
     color: #e23c44;
 }
 
-/* =========================================
-   7. MODAL E FORMULÁRIO
-   ========================================= */
+
 .modal {
     position: fixed;
     top: 0;
@@ -322,9 +305,7 @@ input:focus, select:focus {
     background: #00b34a;
 }
 
-/* =========================================
-   8. NOTIFICAÇÃO (TOAST)
-   ========================================= */
+
 .toast {
     position: fixed;
     bottom: 30px;
